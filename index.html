@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Todo</title>
+        <link rel="stylesheet" href="./styles/reset.css" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Arimo&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="stylesheet" href="./styles/index.css" />
+    </head>
+    <body>
+        <section class="movie">
+            <div class="container">
+                <div class="header">
+                    <p class="header__text">СПИСОК ФИЛЬМОВ</p>
+                    <p class="header__year">2023</p>
+                </div>
+                <h1 class="movie__title">Посмотреть</h1>
+                <div class="movie__wrap">
+                    <form action="" class="movie__form">
+                        <input
+                            class="movie__form-input"
+                            type="text"
+                            placeholder="Добавить фильм"
+                        />
+                        <button class="movie__form-btn"></button>
+                    </form>
+                    <div class="movie__inner">
+                        <ul class="movie__list">
+                            <!-- <li class="movie__item">
+                                <input
+                                    class="movie__checkbox"
+                                    type="checkbox"
+                                />
+                                <label class="movie__label" for=""
+                                    >Я добавил фильм</label
+                                >
+                                <button class="movie__remove"></button>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="./scripts/index.js"></script>
+    </body>
+</html>

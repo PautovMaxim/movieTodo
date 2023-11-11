@@ -1,0 +1,153 @@
+body {
+    font-family: 'Arimo', sans-serif;
+    font-weight: 400;
+    color: #F3F6F9;
+    background-color: #181818;
+}
+
+.movie {
+    margin: 0 auto;
+    max-width: 930px;
+}
+
+.header {
+    margin-left: 70px;
+    margin-top: 50px;
+    display: flex;
+}
+
+.header p {
+    padding: 10px;
+    border-radius: 200px;
+    font-size: 15px;
+    letter-spacing: -0.6px;
+    text-align: center;
+    background: #6532F8;
+}
+
+.header__year {
+    width: 75px;
+}
+
+.movie__title {
+    margin-left: 70px;
+    margin-bottom: 45px;
+    font-size: 120.416px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -4.817px;
+}
+
+.movie__wrap {
+    padding: 60px 70px;
+    max-height: 600px;
+    background: #232323;
+    border-radius: 20px;
+}
+
+.movie__form {
+    margin-bottom: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.movie__form-input {
+    padding: 15px 0;
+    width: 441px;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid rgba(243, 246, 249, 0.5);;
+    font-size: 30px;
+    letter-spacing: -0.6px;
+    background: #232323;
+    color: #fff;
+}
+.movie__form-input::placeholder {
+    opacity: 0.5;
+}
+
+.movie__form-input:focus {
+    outline: none;
+}
+
+.movie__form-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 62px;
+    border: 0;
+    background: url(../resources/addBtn.png);
+    background-color: #6532f8;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 31px;
+    cursor: pointer;
+}
+
+.movie__inner {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.movie__list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.movie__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: #3A3939;
+    height: 71px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.movie__label {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-family: Arimo;
+    font-size: 20px;
+    letter-spacing: -0.4px;
+}
+
+.movie__checkbox {
+    /* position: absolute;
+    z-index: -1;
+    opacity: 0; */
+    display: none;
+}
+
+.movie__checkbox+label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #F3F6F9;
+    border-radius: 100px;
+    transition: all 0.5s ease-in-out;
+}
+
+.movie__checkbox:checked+label::before {
+    background: #6532F8;
+}
+
+.movie__remove {
+    width: 23px;
+    height: 23px;
+    background: url(../resources/deleteTodo.png) no-repeat;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    transition: scale 0.2s linear;
+}
+
+.inactive {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
