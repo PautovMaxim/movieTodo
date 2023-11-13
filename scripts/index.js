@@ -5,11 +5,24 @@ const movieFormNode = document.querySelector('.movie__form');
 const movieInputNode = document.querySelector('.movie__form-input');
 //ul:
 const movieListNode = document.querySelector('.movie__list');
+//ul-menu:
+const movieListMenuNode = document.querySelector('.movie__list-menu');
+//Active_movies
+const completedMoviesNode = document.querySelector('.movie__completed');
+//movie__all
+const allMoviesNode = document.querySelector('.movie__all');
+//movie__active
+const activeMoviesNode = document.querySelector('.movie__active');
 
 /*Создаём массив, в который будут помещаться наши фильмы*/
 let movies = [];
 
+let activeMovies = [];
+let completedMovies = [];
+
 init();
+showListMenu();
+
 
 /*Объявляем событие по форме(если нажать enter/button, то происходит отправка)*/
 movieFormNode.addEventListener('submit', addMovie);
@@ -33,6 +46,7 @@ function addMovie(event) {
     renderMovie(movies);
 
     saveToLocalStorage();
+    showListMenu();
 
     movieInputNode.value = '';
     movieInputNode.focus();
@@ -58,6 +72,7 @@ function deleteMovie(event) {
     })
 
     saveToLocalStorage();
+    showListMenu();
     
     //удаляем элемент из разметки
     parentNode.remove();
@@ -144,6 +159,7 @@ function saveToLocalStorage() {
     localStorage.setItem('movies', JSON.stringify(movies));
 }
 
+//Подгрузка данных из localStorage
 function init() {
     if (localStorage.getItem('movies')) {
     movies = JSON.parse(localStorage.getItem('movies'));
@@ -152,3 +168,129 @@ function init() {
     }
 }
 
+//функция отображения меню
+function showListMenu() {
+    if (movies.length > 0) {
+        movieListMenuNode.classList.remove('movie__list-menu_hidden');
+    } else if (movies.length == 0) {
+        movieListMenuNode.classList.add('movie__list-menu_hidden');
+    }
+}
+
+/*Завершённые*/
+completedMoviesNode.addEventListener('click', showCompletedMovies);
+
+function showCompletedMovies() {
+     completedMovies = movies.filter(function(newMovie) {
+        if (newMovie.checked === true) {
+            return true;
+        } else {
+            return false;
+        }
+    })
+    renderCompleted(completedMovies);
+}
+
+function renderCompleted(completedMovies) {
+    movieListNode.innerHTML = '';
+
+    completedMovies.forEach(newMovie => {
+        //создаём переменные, в которых будут хранится HTML элементы
+        const movieItem = document.createElement('li');
+        const movieLabel = document.createElement('label');    
+        const movieCheckbox = document.createElement('input');    
+        const movieRemoveBtn = document.createElement('button');
+
+        //добавляем атрибут 'data-id=newMovie.id'
+        movieItem.dataset.id = newMovie.id;
+        //добавляем атрибут 'data-action=delete'
+        movieRemoveBtn.dataset.action = 'delete';
+        
+        //генерируем эти элементы на странице
+        movieListNode.appendChild(movieItem);
+        movieItem.appendChild(movieCheckbox);
+        movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieRemoveBtn);
+
+        //добавляем классы к элементам
+        movieItem.className = 'movie__item';
+        movieCheckbox.className = 'movie__checkbox';
+        movieLabel.className = 'movie__label';
+        movieRemoveBtn.className = 'movie__remove';
+
+        //добавляем атрибуты к элементам
+        movieCheckbox.setAttribute('type', 'checkbox');
+        movieCheckbox.setAttribute('id', newMovie.id);
+        movieLabel.setAttribute('for', newMovie.id);
+
+        //название фильма отображаем в label
+        movieLabel.innerText = newMovie.movie;
+
+        checkStateCard (movieItem, movieCheckbox, newMovie);
+        });
+}
+//--------------------------------------------------------------------
+
+/*Все*/
+allMoviesNode.addEventListener('click', showAllMovies);
+
+function showAllMovies() {
+    renderMovie(movies);
+}
+
+/*Активные*/
+activeMoviesNode.addEventListener('click', showActiveMovies);
+
+function showActiveMovies() {
+    
+    activeMovies = movies.filter(function(activeMovie) {
+        if (activeMovie.checked === false) {
+            return true;
+        } else {
+            return false;
+        }
+    })
+
+    renderActive(activeMovies);
+
+}
+
+
+function renderActive(activeMovies) {
+    movieListNode.innerHTML = '';
+
+    activeMovies.forEach(activeMovie => {
+        //создаём переменные, в которых будут хранится HTML элементы
+        const movieItem = document.createElement('li');
+        const movieLabel = document.createElement('label');    
+        const movieCheckbox = document.createElement('input');    
+        const movieRemoveBtn = document.createElement('button');
+
+        //добавляем атрибут 'data-id=newMovie.id'
+        movieItem.dataset.id = activeMovie.id;
+        //добавляем атрибут 'data-action=delete'
+        movieRemoveBtn.dataset.action = 'delete';
+        
+        //генерируем эти элементы на странице
+        movieListNode.appendChild(movieItem);
+        movieItem.appendChild(movieCheckbox);
+        movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieRemoveBtn);
+
+        //добавляем классы к элементам
+        movieItem.className = 'movie__item';
+        movieCheckbox.className = 'movie__checkbox';
+        movieLabel.className = 'movie__label';
+        movieRemoveBtn.className = 'movie__remove';
+
+        //добавляем атрибуты к элементам
+        movieCheckbox.setAttribute('type', 'checkbox');
+        movieCheckbox.setAttribute('id', activeMovie.id);
+        movieLabel.setAttribute('for', activeMovie.id);
+
+        //название фильма отображаем в label
+        movieLabel.innerText = activeMovie.movie;
+
+        checkStateCard (movieItem, movieCheckbox, activeMovie);
+        });
+}

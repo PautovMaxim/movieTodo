@@ -40,7 +40,7 @@ body {
 
 .movie__wrap {
     padding: 60px 70px;
-    max-height: 600px;
+    max-height: 650px;
     background: #232323;
     border-radius: 20px;
 }
@@ -150,4 +150,25 @@ body {
 .inactive {
     opacity: 0.5;
     text-decoration: line-through;
+}
+
+.movie__list-menu {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.movie__list-menu_hidden {
+    display: none;
+}
+
+.movie__list-button {
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s ease; 
+}
+
+.movie__list-button:hover {
+    color: #6532F8;
 }
