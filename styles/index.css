@@ -39,6 +39,7 @@ body {
 }
 
 .movie__wrap {
+    margin-bottom: 50px;
     padding: 60px 70px;
     max-height: 650px;
     background: #232323;

@@ -13,12 +13,14 @@ const completedMoviesNode = document.querySelector('.movie__completed');
 const allMoviesNode = document.querySelector('.movie__all');
 //movie__active
 const activeMoviesNode = document.querySelector('.movie__active');
+//deleteCompleted
+const deleteCompletedMovieNode = document.querySelector('.movie__deleteCompletedBtn');
 
 /*Создаём массив, в который будут помещаться наши фильмы*/
 let movies = [];
 
-let activeMovies = [];
-let completedMovies = [];
+let activeMovies = []; //для вкладки "активные"
+let completedMovies = []; //для вкладки "выполненные"
 
 init();
 showListMenu();
@@ -32,6 +34,10 @@ movieListNode.addEventListener('click', doneMovie);
 /*Функции*/
 function addMovie(event) {
     event.preventDefault();//обнуляем поведение формы
+
+    if (!movieInputNode.value) {
+        return;
+    }
     
     const movieName = movieInputNode.value;//объявляем переменную со значением с инпута
 
@@ -97,6 +103,18 @@ function doneMovie(event) {
 
     
     newMovie.checked = !newMovie.checked;
+
+    if (allMoviesNode.classList.contains('active')) {
+        showAllMovies();
+    }
+
+    if (activeMoviesNode.classList.contains('active')) {
+        showActiveMovies();
+    }
+
+    if (completedMoviesNode.classList.contains('active')) {
+        showCompletedMovies();
+    }
 
     saveToLocalStorage();
 
@@ -177,10 +195,14 @@ function showListMenu() {
     }
 }
 
-/*Завершённые*/
+/*Выполненные*/
 completedMoviesNode.addEventListener('click', showCompletedMovies);
 
 function showCompletedMovies() {
+    completedMoviesNode.classList.add('active');
+    allMoviesNode.classList.remove('active');
+    activeMoviesNode.classList.remove('active');
+
      completedMovies = movies.filter(function(newMovie) {
         if (newMovie.checked === true) {
             return true;
@@ -235,6 +257,9 @@ function renderCompleted(completedMovies) {
 allMoviesNode.addEventListener('click', showAllMovies);
 
 function showAllMovies() {
+    allMoviesNode.classList.add('active');
+    activeMoviesNode.classList.remove('active');
+    completedMoviesNode.classList.remove('active');
     renderMovie(movies);
 }
 
@@ -242,7 +267,10 @@ function showAllMovies() {
 activeMoviesNode.addEventListener('click', showActiveMovies);
 
 function showActiveMovies() {
-    
+    activeMoviesNode.classList.add('active');
+    allMoviesNode.classList.remove('active');
+    completedMoviesNode.classList.remove('active');
+
     activeMovies = movies.filter(function(activeMovie) {
         if (activeMovie.checked === false) {
             return true;
@@ -252,7 +280,6 @@ function showActiveMovies() {
     })
 
     renderActive(activeMovies);
-
 }
 
 
@@ -294,3 +321,4 @@ function renderActive(activeMovies) {
         checkStateCard (movieItem, movieCheckbox, activeMovie);
         });
 }
+
