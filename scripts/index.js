@@ -14,7 +14,7 @@ const allMoviesNode = document.querySelector('.movie__all');
 //movie__active
 const activeMoviesNode = document.querySelector('.movie__active');
 //deleteCompleted
-const deleteCompletedMovieNode = document.querySelector('.movie__deleteCompletedBtn');
+const deleteCompletedMoviesNode = document.querySelector('.deleteCompletedMovies');
 
 /*Создаём массив, в который будут помещаться наши фильмы*/
 let movies = [];
@@ -24,14 +24,30 @@ let completedMovies = []; //для вкладки "выполненные"
 
 init();
 showListMenu();
+showDeleteCompletedBtn();
 
 
-/*Объявляем событие по форме(если нажать enter/button, то происходит отправка)*/
+//Работа формы
 movieFormNode.addEventListener('submit', addMovie);
+//Работа кнопки удаления карточки
 movieListNode.addEventListener('click', deleteMovie);
-movieListNode.addEventListener('click', doneMovie);
+//Работа кнопки изменения содержимого карточки
+movieListNode.addEventListener('click', editMovie);
+//Работа кнопки изменения состояния карточки
+movieListNode.addEventListener('click', doneMovie); /*ДОДЕЛАТЬ*/
+
+//Показать все карточки
+allMoviesNode.addEventListener('click', showAllMovies);
+//Показать активные карточки
+activeMoviesNode.addEventListener('click', showActiveMovies);
+//Показать выполненные карточки
+completedMoviesNode.addEventListener('click', showCompletedMovies);
+
+//Удалить все выполненные карточки
+deleteCompletedMoviesNode.addEventListener('click', deleteCompletedMovies);
 
 /*Функции*/
+//Добавляет карточку
 function addMovie(event) {
     event.preventDefault();//обнуляем поведение формы
 
@@ -58,6 +74,16 @@ function addMovie(event) {
     movieInputNode.focus();
 }
 
+/*ДОДЕЛАТЬ*/
+function editMovie(event) {
+    //если кликл произошел не по элементу с атрибутом, выходим из функции
+    if (event.target.dataset.action !== 'edit') {
+        return;
+    }
+
+}
+
+//Удаляет карточку
 function deleteMovie(event) {
     //если кликл произошел не по элементу с атрибутом, выходим из функции 
     if(event.target.dataset.action !== 'delete') {
@@ -85,6 +111,7 @@ function deleteMovie(event) {
 
 }
 
+//Изменяет состояние карточки
 function doneMovie(event) {
     //если клик был совершён не по label, выходим из функции
     if (!event.target.classList.contains('movie__label')){
@@ -121,7 +148,7 @@ function doneMovie(event) {
     parentNode.classList.toggle('inactive');
 }
 
-//Создание карточки
+//Отображение карточки
 function renderMovie(movies) {
     movieListNode.innerHTML = '';
 
@@ -130,10 +157,13 @@ function renderMovie(movies) {
         const movieItem = document.createElement('li');
         const movieLabel = document.createElement('label');    
         const movieCheckbox = document.createElement('input');    
+        const movieEditBtn = document.createElement('button');
         const movieRemoveBtn = document.createElement('button');
 
         //добавляем атрибут 'data-id=newMovie.id'
         movieItem.dataset.id = newMovie.id;
+        //добавляем атрибут 'data-action=edit'
+        movieEditBtn.dataset.action = 'edit'
         //добавляем атрибут 'data-action=delete'
         movieRemoveBtn.dataset.action = 'delete';
         
@@ -141,13 +171,18 @@ function renderMovie(movies) {
         movieListNode.appendChild(movieItem);
         movieItem.appendChild(movieCheckbox);
         movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieEditBtn);
         movieItem.appendChild(movieRemoveBtn);
 
         //добавляем классы к элементам
         movieItem.className = 'movie__item';
         movieCheckbox.className = 'movie__checkbox';
         movieLabel.className = 'movie__label';
+        movieEditBtn.className = 'movie__edit';
         movieRemoveBtn.className = 'movie__remove';
+
+        //изменяем текст кнопки 'изменить'
+        movieEditBtn.innerText = 'EDIT';
 
         //добавляем атрибуты к элементам
         movieCheckbox.setAttribute('type', 'checkbox');
@@ -195,77 +230,18 @@ function showListMenu() {
     }
 }
 
-/*Выполненные*/
-completedMoviesNode.addEventListener('click', showCompletedMovies);
-
-function showCompletedMovies() {
-    completedMoviesNode.classList.add('active');
-    allMoviesNode.classList.remove('active');
-    activeMoviesNode.classList.remove('active');
-
-     completedMovies = movies.filter(function(newMovie) {
-        if (newMovie.checked === true) {
-            return true;
-        } else {
-            return false;
-        }
-    })
-    renderCompleted(completedMovies);
-}
-
-function renderCompleted(completedMovies) {
-    movieListNode.innerHTML = '';
-
-    completedMovies.forEach(newMovie => {
-        //создаём переменные, в которых будут хранится HTML элементы
-        const movieItem = document.createElement('li');
-        const movieLabel = document.createElement('label');    
-        const movieCheckbox = document.createElement('input');    
-        const movieRemoveBtn = document.createElement('button');
-
-        //добавляем атрибут 'data-id=newMovie.id'
-        movieItem.dataset.id = newMovie.id;
-        //добавляем атрибут 'data-action=delete'
-        movieRemoveBtn.dataset.action = 'delete';
-        
-        //генерируем эти элементы на странице
-        movieListNode.appendChild(movieItem);
-        movieItem.appendChild(movieCheckbox);
-        movieItem.appendChild(movieLabel);
-        movieItem.appendChild(movieRemoveBtn);
-
-        //добавляем классы к элементам
-        movieItem.className = 'movie__item';
-        movieCheckbox.className = 'movie__checkbox';
-        movieLabel.className = 'movie__label';
-        movieRemoveBtn.className = 'movie__remove';
-
-        //добавляем атрибуты к элементам
-        movieCheckbox.setAttribute('type', 'checkbox');
-        movieCheckbox.setAttribute('id', newMovie.id);
-        movieLabel.setAttribute('for', newMovie.id);
-
-        //название фильма отображаем в label
-        movieLabel.innerText = newMovie.movie;
-
-        checkStateCard (movieItem, movieCheckbox, newMovie);
-        });
-}
 //--------------------------------------------------------------------
 
 /*Все*/
-allMoviesNode.addEventListener('click', showAllMovies);
-
 function showAllMovies() {
     allMoviesNode.classList.add('active');
     activeMoviesNode.classList.remove('active');
     completedMoviesNode.classList.remove('active');
     renderMovie(movies);
+    showDeleteCompletedBtn();
 }
 
 /*Активные*/
-activeMoviesNode.addEventListener('click', showActiveMovies);
-
 function showActiveMovies() {
     activeMoviesNode.classList.add('active');
     allMoviesNode.classList.remove('active');
@@ -280,8 +256,8 @@ function showActiveMovies() {
     })
 
     renderActive(activeMovies);
+    showDeleteCompletedBtn();
 }
-
 
 function renderActive(activeMovies) {
     movieListNode.innerHTML = '';
@@ -322,3 +298,84 @@ function renderActive(activeMovies) {
         });
 }
 
+/*Выполненные*/
+function showCompletedMovies() {
+    completedMoviesNode.classList.add('active');
+    allMoviesNode.classList.remove('active');
+    activeMoviesNode.classList.remove('active');
+
+     completedMovies = movies.filter(function(newMovie) {
+        if (newMovie.checked === true) {
+            return true;
+        } else {
+            return false;
+        }
+    })
+    renderCompleted(completedMovies);
+    showDeleteCompletedBtn();
+}
+
+function renderCompleted(completedMovies) {
+    movieListNode.innerHTML = '';
+
+    completedMovies.forEach(completedMovie => {
+        //создаём переменные, в которых будут хранится HTML элементы
+        const movieItem = document.createElement('li');
+        const movieLabel = document.createElement('label');    
+        const movieCheckbox = document.createElement('input');    
+        const movieRemoveBtn = document.createElement('button');
+
+        //добавляем атрибут 'data-id=newMovie.id'
+        movieItem.dataset.id = completedMovie.id;
+        //добавляем атрибут 'data-action=delete'
+        movieRemoveBtn.dataset.action = 'delete';
+        
+        //генерируем эти элементы на странице
+        movieListNode.appendChild(movieItem);
+        movieItem.appendChild(movieCheckbox);
+        movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieRemoveBtn);
+
+        //добавляем классы к элементам
+        movieItem.className = 'movie__item';
+        movieCheckbox.className = 'movie__checkbox';
+        movieLabel.className = 'movie__label';
+        movieRemoveBtn.className = 'movie__remove';
+
+        //добавляем атрибуты к элементам
+        movieCheckbox.setAttribute('type', 'checkbox');
+        movieCheckbox.setAttribute('id', completedMovie.id);
+        movieLabel.setAttribute('for', completedMovie.id);
+
+        //название фильма отображаем в label
+        movieLabel.innerText = completedMovie.movie;
+
+        checkStateCard (movieItem, movieCheckbox, completedMovie);
+        });
+}
+//--------------------------------------------------------------------
+
+//Функция для удаления выполненных карточек
+function deleteCompletedMovies() {
+    movies = movies.filter(function(newMovie) {
+        if (newMovie.checked === true) {
+            return false;
+        } else {
+            return true;
+        }
+    })
+
+    renderMovie(movies);
+    showListMenu();
+
+    saveToLocalStorage();
+}
+
+// Функция показа кнопки для удаления выполненных карточек
+function showDeleteCompletedBtn() {
+    if (completedMoviesNode.classList.contains('active') || activeMoviesNode.classList.contains('active')) {
+        deleteCompletedMoviesNode.classList.add('deleteCompletedMovies_hidden');
+    } else {
+        deleteCompletedMoviesNode.classList.remove('deleteCompletedMovies_hidden');
+    }
+}

@@ -41,7 +41,7 @@ body {
 .movie__wrap {
     margin-bottom: 50px;
     padding: 60px 70px;
-    max-height: 650px;
+    max-height: 720px;
     background: #232323;
     border-radius: 20px;
 }
@@ -145,7 +145,23 @@ body {
     background-size: contain;
     border: none;
     cursor: pointer;
-    transition: scale 0.2s linear;
+}
+
+.movie__edit {
+    margin-right: 15px;
+    padding: 5px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #F3F6F9;
+    background-color: #3A3939;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.movie__edit:hover {
+    background-color: #6532F8;
 }
 
 .inactive {
@@ -172,4 +188,25 @@ body {
 
 .movie__list-button:hover {
     color: #6532F8;
+}
+
+.deleteCompletedMovies {
+    margin-bottom: 20px;
+    width: 230px;
+    height: 50px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 20px;
+    background-color: #232323;
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.deleteCompletedMovies:hover {
+    background-color: #6532F8;
+}
+
+.deleteCompletedMovies_hidden {
+    display: none;
 }
