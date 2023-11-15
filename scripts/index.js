@@ -81,6 +81,31 @@ function editMovie(event) {
         return;
     }
 
+    //Находим айди конкретного элемента
+    const parentNode = event.target.closest('.movie__item');
+    const id = Number(parentNode.dataset.id);
+
+    //Новое название
+    const newName = prompt('Введите новое значение:');
+
+    //Объявляем элемент label, для дальнейшего его изменения
+    const movieLabelNode = document.querySelector('.movie__label');
+
+    //если пользователь ничего не ввёл, выходим из функции
+    if (newName === '' || newName == null) {
+        return;
+    }
+    
+    //Изменяем нужный элемент в массиве и на странице
+    movies.forEach(newMovie => {
+        if (id === newMovie.id) {
+            movieLabelNode.innerText = newName;
+            newMovie.movie = newName;
+        }
+    });
+
+    renderMovie(movies);
+    saveToLocalStorage();
 }
 
 //Удаляет карточку
@@ -267,10 +292,13 @@ function renderActive(activeMovies) {
         const movieItem = document.createElement('li');
         const movieLabel = document.createElement('label');    
         const movieCheckbox = document.createElement('input');    
+        const movieEditBtn = document.createElement('button');
         const movieRemoveBtn = document.createElement('button');
 
         //добавляем атрибут 'data-id=newMovie.id'
         movieItem.dataset.id = activeMovie.id;
+        //добавляем атрибут 'data-action=edit'
+        movieEditBtn.dataset.action = 'edit';
         //добавляем атрибут 'data-action=delete'
         movieRemoveBtn.dataset.action = 'delete';
         
@@ -278,13 +306,18 @@ function renderActive(activeMovies) {
         movieListNode.appendChild(movieItem);
         movieItem.appendChild(movieCheckbox);
         movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieEditBtn);
         movieItem.appendChild(movieRemoveBtn);
 
         //добавляем классы к элементам
         movieItem.className = 'movie__item';
         movieCheckbox.className = 'movie__checkbox';
         movieLabel.className = 'movie__label';
+        movieEditBtn.className = 'movie__edit';
         movieRemoveBtn.className = 'movie__remove';
+
+        //
+        movieEditBtn.innerText = 'EDIT';
 
         //добавляем атрибуты к элементам
         movieCheckbox.setAttribute('type', 'checkbox');
@@ -322,11 +355,14 @@ function renderCompleted(completedMovies) {
         //создаём переменные, в которых будут хранится HTML элементы
         const movieItem = document.createElement('li');
         const movieLabel = document.createElement('label');    
-        const movieCheckbox = document.createElement('input');    
+        const movieCheckbox = document.createElement('input');  
+        const movieEditBtn = document.createElement('button');  
         const movieRemoveBtn = document.createElement('button');
 
         //добавляем атрибут 'data-id=newMovie.id'
         movieItem.dataset.id = completedMovie.id;
+        //добавляем атрибут 'data-action=remove'
+        movieEditBtn.dataset.action = 'edit';
         //добавляем атрибут 'data-action=delete'
         movieRemoveBtn.dataset.action = 'delete';
         
@@ -334,13 +370,18 @@ function renderCompleted(completedMovies) {
         movieListNode.appendChild(movieItem);
         movieItem.appendChild(movieCheckbox);
         movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieEditBtn);
         movieItem.appendChild(movieRemoveBtn);
 
         //добавляем классы к элементам
         movieItem.className = 'movie__item';
         movieCheckbox.className = 'movie__checkbox';
         movieLabel.className = 'movie__label';
+        movieEditBtn.className = 'movie__edit';
         movieRemoveBtn.className = 'movie__remove';
+
+        //изменяем текст кнопки 'изменить'
+        movieEditBtn.innerText = 'EDIT';
 
         //добавляем атрибуты к элементам
         movieCheckbox.setAttribute('type', 'checkbox');

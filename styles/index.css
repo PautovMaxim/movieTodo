@@ -210,3 +210,7 @@ body {
 .deleteCompletedMovies_hidden {
     display: none;
 }
+
+.active {
+    color: #6532F8;
+}
