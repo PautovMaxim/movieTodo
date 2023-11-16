@@ -95,16 +95,40 @@ function editMovie(event) {
     if (newName === '' || newName == null) {
         return;
     }
-    
-    //Изменяем нужный элемент в массиве и на странице
-    movies.forEach(newMovie => {
-        if (id === newMovie.id) {
-            movieLabelNode.innerText = newName;
-            newMovie.movie = newName;
-        }
-    });
 
-    renderMovie(movies);
+    //изменения для вкладки "все"
+    if (allMoviesNode.classList.contains('active')) {
+        movies.forEach(newMovie => {
+            if (id === newMovie.id) {
+                movieLabelNode.innerText = newName;
+                newMovie.movie = newName;
+            }
+        });
+        renderMovie(movies);
+    }
+
+    //изменения для вкладки "активные"
+    if (activeMoviesNode.classList.contains('active')) {
+        activeMovies.forEach(activeMovie => {
+            if (id === activeMovie.id) {
+                movieLabelNode.innerText = newName;
+                activeMovie.movie = newName;
+            }
+        });
+        renderActive(activeMovies);
+    }
+
+    //изменения для вкладки "выполненные"
+    if (completedMoviesNode.classList.contains('active')) {
+        completedMovies.forEach(completedMovie => {
+            if (id === completedMovie.id) {
+                movieLabelNode.innerText = newName;
+                completedMovie.movie = newName;
+            }
+        });
+        renderCompleted(completedMovies);
+    }
+
     saveToLocalStorage();
 }
 
